@@ -1,0 +1,29 @@
+before:
+  hooks:
+  - go mod download
+builds:
+- id: multi-kubectl
+  main: ./
+  binary: multi-kubectl
+  env:
+  - CGO_ENABLED=0
+  goos:
+  - linux
+  - darwin
+  goarch:
+  - amd64
+  - arm64
+  ignore:
+  - goos: darwin
+    goarch: arm64
+  - goos: windows
+    goarch: arm64
+
+archives:
+- builds:
+  - multi-kubectl
+  name_template: "{{ .ProjectName }}_{{ .Tag }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}"
+  wrap_in_directory: false
+  format: tar.gz
+  files:
+  - LICENSE
