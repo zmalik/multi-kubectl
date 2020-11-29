@@ -3,10 +3,29 @@ kubectl to multiple clusters present in contexts
 
 
 ### Installation:
-
+Get the latest release from the [releases page](https://github.com/zmalik/multi-kubectl/releases)
 
 ### Usage:
-use the flags `--match-ctx` for any match and `--ctx` for exact match. 
+multi-kubectl supports two flags
+- `--match-ctx` for any match
+- `--ctx` for the exact match 
+
+
+```
+multi-kubectl get ns --match-ctx prod 
+```
+this will run `kubectl get ns` against all contexts, which name contains the string `prod`ß
+
+
+```
+multi-kubectl get ns --ctx kind-second --ctx=kind-kind
+```
+ will get from namespaces using the contexts `kind-kind` and `kind-second` 
+
+```
+multi-kubectl get ns --ctx=my-context
+```
+will get the namespaces using the context `my-context`
 
 ## Requirements:
 
