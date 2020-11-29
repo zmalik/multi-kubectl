@@ -14,7 +14,7 @@ multi-kubectl supports two flags
 ```
 multi-kubectl get ns --match-ctx prod 
 ```
-this will run `kubectl get ns` against all contexts, which name contains the string `prod`ß
+this will run `kubectl get ns` against all contexts, which name contains the string `prod`
 
 
 ```
