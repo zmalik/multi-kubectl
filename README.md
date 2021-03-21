@@ -35,7 +35,7 @@ will get the namespaces using the context `my-context`
 ### Examples:
 ```
 ❯ multi-kubectl get pods -A --match-ctx=kind
-context : kind-kind
+cluster:kind-kind
 NAMESPACE            NAME                                         READY   STATUS    RESTARTS   AGE
 kube-system          coredns-f9fd979d6-lwglv                      1/1     Running   1          44h
 kube-system          coredns-f9fd979d6-tdqtf                      1/1     Running   0          44h
@@ -46,8 +46,7 @@ kube-system          kube-controller-manager-kind-control-plane   1/1     Runnin
 kube-system          kube-proxy-xhqn8                             1/1     Running   0          44h
 kube-system          kube-scheduler-kind-control-plane            1/1     Running   28         44h
 local-path-storage   local-path-provisioner-78776bfc44-8hm86      1/1     Running   27         44h
-
-context : kind-second
+cluster:kind-second
 NAMESPACE            NAME                                           READY   STATUS    RESTARTS   AGE
 kube-system          coredns-f9fd979d6-5gdlk                        1/1     Running   0          44h
 kube-system          coredns-f9fd979d6-m4ffq                        1/1     Running   0          44h
