@@ -8,6 +8,7 @@ import (
 	"os"
 	"os/exec"
 	"strings"
+	"sync"
 )
 
 //Opts are Options for the contexts configuration
@@ -24,24 +25,28 @@ func RunCommand(args []string) {
 		log.Fatal("error loading contexts from kubeconfig", err)
 	}
 
+	var wg sync.WaitGroup
 	for _, ctx := range ctxs {
+
 		if !contextsFromFile.ContextExists(ctx) {
 			fmt.Printf("Skipping context %s as cannot be found in KUBECONFIG file\n", ctx)
 			continue
 		}
-		runCommand(ctx, args)
+		wg.Add(1)
+		go runCommand(ctx, args, &wg)
 	}
+	wg.Wait()
 
 }
 
-func runCommand(ctx string, args []string) {
+func runCommand(ctx string, args []string, wg *sync.WaitGroup) {
+	defer wg.Done()
 	tmpFile, err := ioutil.TempFile(os.TempDir(), fmt.Sprintf("kconfig-%s", ctx))
 	if err != nil {
 		log.Fatal("Cannot create temporary file", err)
 	}
 	defer os.Remove(tmpFile.Name())
 
-	fmt.Println("context : " + ctx)
 	execCmd("kubectl", args, getKubeconfigPath(), ctx, false)
 }
 
@@ -58,7 +63,7 @@ func execCmd(execCmd string, args []string, configPath string, ctx string, silen
 	output, err := krun.CombinedOutput()
 
 	if !silent {
-		fmt.Println(string(output))
+		fmt.Println(fmt.Sprintf("cluster:%s\n%s", ctx, string(output)))
 	}
 	if err != nil {
 		fmt.Println(string(output))
